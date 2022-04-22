@@ -1,8 +1,6 @@
 import canvas from 'canvas';
 import fs from 'fs';
-import artFragments from './artFragments.js';
-// import artFragments from './artFragmentsSmall.js';
-import { cmToPixels } from './helpers/index.js';
+import { cmToPixels } from '../helpers/index.js';
 
 const { createCanvas } = canvas;
 
@@ -166,12 +164,17 @@ function assembleWorkspaceCanvas(canvas, offsetList) {
     return workspaceCanvas;
 }
 
-const originalCanvas = assembleCanvas(artFragments);
-const explodedCanvas = explodeCanvas(originalCanvas);
+export function calculateOffsets(artFragments, logResult = false) {
+    const originalCanvas = assembleCanvas(artFragments);
+    const explodedCanvas = explodeCanvas(originalCanvas);
 
-const thresholdOffset = getThresholdOffset(explodedCanvas);
-const offsetList = getOffsetList(explodedCanvas, thresholdOffset);
-const finalWorkspaceCanvas = assembleWorkspaceCanvas(originalCanvas, offsetList);
+    const thresholdOffset = getThresholdOffset(explodedCanvas);
+    const offsetList = getOffsetList(explodedCanvas, thresholdOffset);
 
-console.log(offsetList);
-fs.writeFileSync('out.png', finalWorkspaceCanvas.toBuffer());
+    if (logResult) {
+        const finalWorkspaceCanvas = assembleWorkspaceCanvas(explodedCanvas, offsetList);
+        fs.writeFileSync('out.png', finalWorkspaceCanvas.toBuffer());
+    }
+
+    return offsetList;
+}
