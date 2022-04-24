@@ -139,3 +139,23 @@ export async function getArtFragments(img) {
 
     return artFragments;
 }
+
+export function createImageFromArtFragment(artFragment) {
+    const { width, height } = artFragment;
+    const canvas = createCanvas(width, height);
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = `rgba(0, 0, 0, 0)`;
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.fillStyle = `rgba(0, 0, 0, 1)`;
+    artFragment.data.forEach((row, i) => {
+        row.forEach((value, j) => {
+            if (value === 1) {
+                ctx.fillRect(j, i, 1, 1);
+            }
+        });
+    });
+
+    return canvas.toBuffer();
+}
