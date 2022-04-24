@@ -26,6 +26,33 @@ model Quotation {
   client      Client   @relation(fields: [client_id], references: [id])
   client_id   Int
   description String
+  arts        Art[]
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+}
+
+model Art {
+  @@map(name: "art")
+  id            Int       @id @default(autoincrement())
+  quotation     Quotation @relation(fields: [quotation_id], references: [id])
+  quotation_id  Int
+  dpi           Int
+  height        Int
+  width         Int
+  art_fragments ArtFragment[]
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+model ArtFragment {
+  @@map(name: "art_fragment")
+  id           Int      @id @default(autoincrement())
+  art          Art      @relation(fields: [art_id], references: [id])
+  art_id       Int
+  x            Int
+  y            Int
+  height       Int
+  width        Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 }

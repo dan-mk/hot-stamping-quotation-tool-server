@@ -3,4 +3,5 @@ out.png
 .env
 prisma/database.db
 prisma/database.db-journal
-uploads/*.png
+uploads/arts/*.png
+uploads/art_fragments/*.png
