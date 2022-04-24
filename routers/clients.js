@@ -8,6 +8,16 @@ router.get('/', async (req, res) => {
     res.json(clients);
 });
 
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    const client = await prisma.client.findUnique({
+        where: {
+            id: parseInt(id),
+        }
+    });
+    res.json(client);
+});
+
 router.post('/', async (req, res) => {
     const { name, email } = req.body;
 

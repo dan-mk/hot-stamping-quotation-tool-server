@@ -2,8 +2,11 @@ import canvas from 'canvas';
 
 const { createCanvas, loadImage } = canvas;
 
-export async function getArtFragments(imgBuffer) {
-    const img = await loadImage(imgBuffer);
+export async function createImage(imgBuffer) {
+    return await loadImage(imgBuffer);
+}
+
+export async function getArtFragments(img) {
     const canvas = createCanvas(img.width, img.height);
     const ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0);
