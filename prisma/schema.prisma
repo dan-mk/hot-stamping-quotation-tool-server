@@ -22,13 +22,14 @@ model Client {
 
 model Quotation {
   @@map(name: "quotation")
-  id          Int      @id @default(autoincrement())
-  client      Client   @relation(fields: [client_id], references: [id])
-  client_id   Int
-  description String
-  arts        Art[]
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  client         Client   @relation(fields: [client_id], references: [id])
+  client_id      Int
+  description    String
+  arts           Art[]
+  configurations Configuration[]
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
 }
 
 model Art {
@@ -55,4 +56,18 @@ model ArtFragment {
   width        Int
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
+}
+
+model Configuration {
+  @@map(name: "configuration")
+  id                   Int       @id @default(autoincrement())
+  quotation            Quotation @relation(fields: [quotation_id], references: [id])
+  quotation_id         Int
+  description          String
+  next_cliche_id       Int
+  next_cliche_group_id Int
+  next_foil_id         Int
+  arts                 String
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
 }

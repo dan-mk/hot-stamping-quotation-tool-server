@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import clientRouter from './routers/clients.js';
 import quotationRouter from './routers/quotations.js';
+import configurationsRouter from './routers/configurations.js';
 import { calculateOffsets } from './services/calculateOffsets.js';
 
 const app = express();
@@ -13,6 +14,7 @@ app.use('/uploads', express.static('uploads'));
 
 app.use('/clients', clientRouter);
 app.use('/quotations', quotationRouter);
+app.use('/configurations', configurationsRouter);
 
 app.post('/calculate-offsets', (req, res) => {
     const { art_fragments } = req.body;
