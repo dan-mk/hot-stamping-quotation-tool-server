@@ -9,8 +9,24 @@ router.get('/', async (req, res) => {
         where: {
             quotation_id: parseInt(quotation_id),
         },
+        include: {
+            quotation: true,
+        },
     });
     res.json(configurations);
+});
+
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    const configuration = await prisma.configuration.findUnique({
+        where: {
+            id: parseInt(id),
+        },
+        include: {
+            quotation: true,
+        },
+    });
+    res.json(configuration);
 });
 
 router.post('/', async (req, res) => {
