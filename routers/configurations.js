@@ -10,10 +10,16 @@ router.get('/', async (req, res) => {
             quotation_id: parseInt(quotation_id),
         },
         include: {
-            quotation: true,
+            quotation: {
+                include: {
+                    arts: true,
+                },
+            },
         },
     });
-    res.json(configurations);
+    res.json(configurations.map(configuration => (
+        { ...configuration, arts: JSON.parse(configuration.arts) }
+    )));
 });
 
 router.get('/:id', async (req, res) => {
@@ -23,9 +29,14 @@ router.get('/:id', async (req, res) => {
             id: parseInt(id),
         },
         include: {
-            quotation: true,
+            quotation: {
+                include: {
+                    arts: true,
+                },
+            },
         },
     });
+    configuration.arts = JSON.parse(configuration.arts);
     res.json(configuration);
 });
 
@@ -49,7 +60,7 @@ router.post('/', async (req, res) => {
             art_id: art.id,
             steps: {
                 '1': {
-                    id: '1',
+                    id: 1,
                     cliches: {
                         data: {},
                     },
