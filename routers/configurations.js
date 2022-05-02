@@ -9,13 +9,6 @@ router.get('/', async (req, res) => {
         where: {
             quotation_id: parseInt(quotation_id),
         },
-        include: {
-            quotation: {
-                include: {
-                    arts: true,
-                },
-            },
-        },
     });
     res.json(configurations.map(configuration => (
         { ...configuration, arts: JSON.parse(configuration.arts) }
@@ -31,7 +24,11 @@ router.get('/:id', async (req, res) => {
         include: {
             quotation: {
                 include: {
-                    arts: true,
+                    arts: {
+                        include: {
+                            art_fragments: true,
+                        }
+                    },
                 },
             },
         },

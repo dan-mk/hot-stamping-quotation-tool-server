@@ -127,7 +127,8 @@ function getOffsetList(canvas, thresholdOffset) {
             }
             offset += 4;
         }
-        offsetList.push(offset);
+        const previousOffsetSum = offsetList.reduce((acc, offset) => acc + offset, 0);
+        offsetList.push(offset - previousOffsetSum);
         workspaceCtx.drawImage(canvas, 0, offset);
         offset += 4;
     }
@@ -153,12 +154,13 @@ function isConflicting(workspacePixels, pixels, offset, width, height) {
 }
 
 function assembleWorkspaceCanvas(canvas, offsetList) {
-    const maxOffset = offsetList[offsetList.length - 1];
-    const workspaceCanvas = createCanvas(canvas.width, canvas.height + maxOffset);
+    const offsetSum = offsetList.reduce((acc, offset) => acc + offset, 0);
+    const workspaceCanvas = createCanvas(canvas.width, canvas.height + offsetSum);
     const ctx = workspaceCanvas.getContext('2d');
 
-    [0, ...offsetList].forEach(offset => {
-        ctx.drawImage(canvas, 0, maxOffset - offset);
+    [0, ...offsetList].forEach((_, i) => {
+        const previousOffsetSum = offsetList.slice(0, i).reduce((acc, offset) => acc + offset, 0);
+        ctx.drawImage(canvas, 0, previousOffsetSum);
     });
 
     return workspaceCanvas;
