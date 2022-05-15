@@ -11,7 +11,10 @@ router.get('/', async (req, res) => {
         },
     });
     res.json(configurations.map(configuration => (
-        { ...configuration, arts: JSON.parse(configuration.arts) }
+        {
+            ...configuration,
+            arts: JSON.parse(configuration.arts),
+        }
     )));
 });
 
@@ -34,6 +37,7 @@ router.get('/:id', async (req, res) => {
         },
     });
     configuration.arts = JSON.parse(configuration.arts);
+    configuration.quotation_instances = JSON.parse(configuration.quotation_instances);
     res.json(configuration);
 });
 
@@ -77,7 +81,9 @@ router.post('/', async (req, res) => {
             next_cliche_id: 1,
             next_cliche_group_id: 1,
             next_foil_id: 1,
+            next_quotation_instance_id: 1,
             arts: JSON.stringify(artsInitialStructure),
+            quotation_instances: JSON.stringify({}),
         }
     });
 
@@ -95,7 +101,14 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { next_cliche_id, next_cliche_group_id, next_foil_id, arts } = req.body;
+    const {
+        next_cliche_id,
+        next_cliche_group_id,
+        next_foil_id,
+        next_quotation_instance_id,
+        arts,
+        quotation_instances
+    } = req.body;
 
     const configuration = await prisma.configuration.update({
         where: {
@@ -105,7 +118,9 @@ router.put('/:id', async (req, res) => {
             next_cliche_id,
             next_cliche_group_id,
             next_foil_id,
+            next_quotation_instance_id,
             arts: JSON.stringify(arts),
+            quotation_instances: JSON.stringify(quotation_instances),
         }
     });
 
