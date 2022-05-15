@@ -52,7 +52,7 @@ router.post('/:id/arts', upload.array('images'), async (req, res) => {
     const { files } = req;
 
     const promises = [];
-    files.forEach((file) => {
+    files.forEach((file, index) => {
         promises.push(async () => {
             const imgBuffer = file.buffer;
 
@@ -61,6 +61,7 @@ router.post('/:id/arts', upload.array('images'), async (req, res) => {
 
             const newArt = await prisma.art.create({
                 data: {
+                    index: index + 1,
                     quotation_id: parseInt(id),
                     dpi: 300,
                     height: img.height,

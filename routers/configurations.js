@@ -93,4 +93,23 @@ router.post('/', async (req, res) => {
     res.json(newConfiguration);
 });
 
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const { next_cliche_id, next_cliche_group_id, next_foil_id, arts } = req.body;
+
+    const configuration = await prisma.configuration.update({
+        where: {
+            id: parseInt(id),
+        },
+        data: {
+            next_cliche_id,
+            next_cliche_group_id,
+            next_foil_id,
+            arts: JSON.stringify(arts),
+        }
+    });
+
+    res.json(configuration);
+});
+
 export default router;
