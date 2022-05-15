@@ -68,6 +68,7 @@ router.post('/', async (req, res) => {
                     foils: {
                         data: {},
                     },
+                    foil_offsets: [],
                 }
             }
 
