@@ -19,7 +19,7 @@ app.use('/quotations', quotationRouter);
 app.use('/configurations', configurationsRouter);
 
 app.post('/calculate-offsets', async (req, res) => {
-    const { art_fragment_ids } = req.body;
+    const { art_fragment_ids, foil_margin } = req.body;
 
     const art_fragments = await prisma.artFragment.findMany({
         where: {
@@ -54,7 +54,7 @@ app.post('/calculate-offsets', async (req, res) => {
     });
     await Promise.all(promises.map(p => p()));
 
-    const offsets = calculateOffsets(art_fragments, true);
+    const offsets = calculateOffsets(art_fragments, foil_margin, false);
     res.json({ offsets });
 });
 

@@ -37,11 +37,11 @@ function assembleCanvas(artFragments) {
     return canvas;
 }
 
-function explodeCanvas(canvas) {
+function explodeCanvas(canvas, foil_margin) {
     const ctx = canvas.getContext('2d');
     const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 
-    const padding = parseInt(cmToPixels(0.5) / 2) * 2;
+    const padding = parseInt(cmToPixels(foil_margin) / 2) * 2;
 
     const explodedCanvas = createCanvas(canvas.width + padding, canvas.height + padding);
     const explodedCtx = explodedCanvas.getContext('2d');
@@ -166,9 +166,9 @@ function assembleWorkspaceCanvas(canvas, offsetList) {
     return workspaceCanvas;
 }
 
-export function calculateOffsets(artFragments, logResult = false) {
+export function calculateOffsets(artFragments, foil_margin, logResult = false) {
     const originalCanvas = assembleCanvas(artFragments);
-    const explodedCanvas = explodeCanvas(originalCanvas);
+    const explodedCanvas = explodeCanvas(originalCanvas, foil_margin);
 
     const thresholdOffset = getThresholdOffset(explodedCanvas);
     const offsetList = getOffsetList(explodedCanvas, thresholdOffset);
