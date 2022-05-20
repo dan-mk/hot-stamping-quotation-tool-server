@@ -2,6 +2,22 @@ import canvas from 'canvas';
 
 const { createCanvas, loadImage } = canvas;
 
+const minList = list => {
+    let m = list[0];
+    for (let i = 0; i < list.length; i++) {
+        m = Math.min(m, list[i]);
+    }
+    return m;
+};
+
+const maxList = list => {
+    let m = list[0];
+    for (let i = 0; i < list.length; i++) {
+        m = Math.max(m, list[i]);
+    }
+    return m;
+};
+
 export async function createImage(imgBuffer) {
     return await loadImage(imgBuffer);
 }
@@ -26,23 +42,16 @@ export async function getArtFragments(img) {
     const up = i => i - 4 * img.width;
     const down = i => i + 4 * img.width;
 
-    const computeLightness = i => 0.2126 * data[i] + 0.715 * data[i + 1] + 0.0722 * data[i + 2];
+    const computeLightness = (i) => {
+        const alpha = data[i + 3];
+        const alphaThreshold = 128;
 
-    const minList = list => {
-        let m = list[0];
-        for (let i = 0; i < list.length; i++) {
-            m = Math.min(m, list[i]);
+        if (alpha < alphaThreshold) {
+            return 255;
         }
-        return m;
-    };
 
-    const maxList = list => {
-        let m = list[0];
-        for (let i = 0; i < list.length; i++) {
-            m = Math.max(m, list[i]);
-        }
-        return m;
-    };
+        return 0.2126 * data[i] + 0.715 * data[i + 1] + 0.0722 * data[i + 2];
+    }
 
     const threshold = 128;
     const visited = data.map(n => 0);
@@ -158,4 +167,13 @@ export function createImageFromArtFragment(artFragment) {
     });
 
     return canvas.toBuffer();
+}
+
+export function doArtFragmentsHavePadding(artFragments, imgWidth, imgHeight) {
+    const overallMinX = minList(artFragments.map(n => n.x));
+    const overallMinY = minList(artFragments.map(n => n.y));
+    const overallMaxX = maxList(artFragments.map(n => n.x + n.width));
+    const overallMaxY = maxList(artFragments.map(n => n.y + n.height));
+
+    return !(overallMinX < 8 && overallMinY < 8 && overallMaxX > imgWidth - 8 && overallMaxY > imgHeight - 8);
 }

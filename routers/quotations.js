@@ -2,7 +2,8 @@ import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
 import prisma from '../prisma/init.js';
-import { createImage, getArtFragments, createImageFromArtFragment } from '../services/artFragments.js';
+import { createImage, getArtFragments, createImageFromArtFragment, doArtFragmentsHavePadding } from '../services/artFragments.js';
+import { cmToPixels } from '../helpers/index.js';
 
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -58,6 +59,15 @@ router.post('/:id/arts', upload.array('images'), async (req, res) => {
 
             const img = await createImage(imgBuffer);
             const artFragments = await getArtFragments(img);
+
+            if (!doArtFragmentsHavePadding(artFragments, img.width, img.height)) {
+                img.width += cmToPixels(3);
+                img.height += cmToPixels(3);
+                artFragments.forEach(artFragment => {
+                    artFragment.x += cmToPixels(1.5);
+                    artFragment.y += cmToPixels(1.5);
+                });
+            }
 
             const newArt = await prisma.art.create({
                 data: {
