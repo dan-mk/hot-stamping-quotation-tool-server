@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
         artsInitialStructure[id] = {
             id,
             art_id: art.id,
-            foil_margin: 0.5,
+            foil_margin: 2,
             steps: {
                 '1': {
                     id: 1,
