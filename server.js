@@ -4,6 +4,7 @@ import jimp from 'jimp';
 import clientRouter from './routers/clients.js';
 import quotationRouter from './routers/quotations.js';
 import configurationsRouter from './routers/configurations.js';
+import updateRouter from './routers/update.js';
 import prisma from './prisma/init.js';
 import { calculateOffsets } from './services/calculateOffsets.js';
 
@@ -17,6 +18,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/clients', clientRouter);
 app.use('/quotations', quotationRouter);
 app.use('/configurations', configurationsRouter);
+app.use('/update', updateRouter);
 
 app.post('/calculate-offsets', async (req, res) => {
     const { art_fragment_ids, foil_margin } = req.body;
