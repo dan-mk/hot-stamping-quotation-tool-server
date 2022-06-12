@@ -125,12 +125,12 @@ function getOffsetList(canvas, thresholdOffset) {
             if (!isConflicting(workspacePixels, pixels, offset, canvas.width, canvas.height)) {
                 break;
             }
-            offset += 4;
+            offset += 10;
         }
         const previousOffsetSum = offsetList.reduce((acc, offset) => acc + offset, 0);
         offsetList.push(offset - previousOffsetSum);
         workspaceCtx.drawImage(canvas, 0, offset);
-        offset += 4;
+        offset += 10;
     }
 
     if (offset >= workspaceCanvasHeight) {
