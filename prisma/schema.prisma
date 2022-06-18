@@ -69,6 +69,7 @@ model Configuration {
   next_cliche_group_id       Int
   next_foil_id               Int
   next_quotation_instance_id Int
+  observations               String    @default("")
   arts                       String
   quotation_instances        String
   created_at                 DateTime  @default(now())

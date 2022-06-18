@@ -84,6 +84,7 @@ router.post('/', async (req, res) => {
             next_cliche_group_id: 1,
             next_foil_id: 1,
             next_quotation_instance_id: 1,
+            observations: '',
             arts: JSON.stringify(artsInitialStructure),
             quotation_instances: JSON.stringify({}),
         }
@@ -108,6 +109,7 @@ router.put('/:id', async (req, res) => {
         next_cliche_group_id,
         next_foil_id,
         next_quotation_instance_id,
+        observations,
         arts,
         quotation_instances
     } = req.body;
@@ -121,6 +123,7 @@ router.put('/:id', async (req, res) => {
             next_cliche_group_id,
             next_foil_id,
             next_quotation_instance_id,
+            observations,
             arts: JSON.stringify(arts),
             quotation_instances: JSON.stringify(quotation_instances),
         }
